@@ -12,12 +12,11 @@ with open('input.txt', 'r') as file:
 left.sort()
 right.sort()
 
-distances = list()
-similarities = list()
+distance = 0
+similarity = 0
 for i in range(len(left)):
-    distances.append(abs(left[i] - right[i]))
-    similarities.append(left[i] * right.count(left[i]))
+    distance += abs(left[i] - right[i])
+    similarity += left[i] * right.count(left[i])
 
-print('Part A: {}'.format(sum(distances)))
-
-print('Part B: {}'.format(sum(similarities)))
+print('Part A: {}'.format(distance))
+print('Part B: {}'.format(similarity))

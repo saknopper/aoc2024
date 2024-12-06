@@ -18,10 +18,8 @@ with open('input.txt', 'r') as file:
 current_pos = [(x, y) for y, row in enumerate(_map) for x, column in enumerate(row) if column == '^'][0]
 current_direction = (0, -1)
 
-original_pos = current_pos
-original_direction = current_direction
-
-visited = { current_pos }
+visited = [ current_pos ]
+directions = [ current_direction ]
 
 while True:
     try:
@@ -30,16 +28,16 @@ while True:
         break
 
     current_pos = next_pos
-    visited.add(current_pos)
+    if current_pos not in visited:
+        visited.append(current_pos)
+        directions.append(current_direction)
 
-visited.remove(original_pos)
-
-potential_obstacle_locations = set()
-for obstacle in visited:
+potential_obstacle_locations = []
+for i, obstacle in enumerate(visited[1:]):
     _map[obstacle[1]][obstacle[0]] = '#'
 
-    current_pos = original_pos
-    current_direction = original_direction
+    current_pos = visited[i-1]
+    current_direction = directions[i-1]
 
     visitedWithDirection = []
     while True:
@@ -51,12 +49,12 @@ for obstacle in visited:
             break
 
         if (next_pos[0], next_pos[1], current_direction[0], current_direction[1]) in visitedWithDirection:
-            potential_obstacle_locations.add(obstacle)
+            potential_obstacle_locations.append(obstacle)
             break
 
         current_pos = next_pos
 
     _map[obstacle[1]][obstacle[0]] = '.'
 
-print('Part A: {}'.format(len(visited) + 1))
+print('Part A: {}'.format(len(visited)))
 print('Part B: {}'.format(len(potential_obstacle_locations)))
